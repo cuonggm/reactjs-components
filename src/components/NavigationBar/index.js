@@ -3,6 +3,7 @@ import {breakPoints, color, fontSize} from "../../const";
 import {Button, LightButton} from "../Button";
 import {Link as StandardLink} from "../Link";
 import logo from "../../icons/icons8-pig-100.png"
+import moreIcon from "../../icons/icons8-more-100.png";
 import {useState} from "react";
 
 /*
@@ -10,6 +11,7 @@ import {useState} from "react";
 * 1. onLogin
 * 2. onLogout
 * 3. links: [{to, label}]
+* 4. isLoggedIn
 * */
 
 const StyledNavigationBar = styled.div`
@@ -55,7 +57,7 @@ const StyledLeftList = styled(StyledList)`
 
 // Drawer
 const StyledRightList = styled(StyledList)`
-  flex-direction: row-reverse;
+  flex-direction: row;
 
   @media (max-width: ${breakPoints.small}) {
     display: ${props => !props.isDrawerShow && "none"};
@@ -139,6 +141,11 @@ const SpanLogo = styled.span`
   color: ${color.light};
 `;
 
+const IconButton = styled.img`
+  width: ${"24px"};
+  height: ${"24px"};
+`;
+
 export const NavigationBar = (props) => {
     const [isDrawerShow, setDrawerShow] = useState(false);
 
@@ -180,20 +187,20 @@ export const NavigationBar = (props) => {
         </StyledPanel>
         <StyledPanel>
             <StyledRightList isDrawerShow={isDrawerShow}>
-                {props.links && props.links.map(link => {
+                {props.links && props.isLoggedIn && props.links.map(link => {
                     return <StyledItem>
-                        <Link to={link.to} onClick={onHideDrawer}>{link.label}</Link>
+                        <Link to={link.to && link.to} onClick={onHideDrawer}>{link.label ? link.label : "Link"}</Link>
                     </StyledItem>
                 })}
-                <StyledItem>
+                {!props.isLoggedIn && <StyledItem>
                     <Link to="/login" onClick={onLogin}>Login</Link>
-                </StyledItem>
-                <StyledItem>
+                </StyledItem>}
+                {props.isLoggedIn && <StyledItem>
                     <Link to="#" onClick={onLogout}>Logout</Link>
-                </StyledItem>
+                </StyledItem>}
             </StyledRightList>
             <AutoShowItem>
-                <Button as={LightButton} onClick={onMoreClick}>More</Button>
+                <Button as={LightButton} onClick={onMoreClick}><IconButton src={moreIcon}/></Button>
             </AutoShowItem>
         </StyledPanel>
     </StyledNavigationBar>

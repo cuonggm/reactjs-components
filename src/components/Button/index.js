@@ -11,6 +11,10 @@ const StyledButton = styled.button`
   border: solid 0 black;
   border-radius: 24px;
   font-size: ${fontSize.standard};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: ${color.primaryHover};

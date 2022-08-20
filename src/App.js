@@ -23,7 +23,7 @@ const navLinks = [{
 const App = () => {
     return (<BrowserRouter>
         <StyledApp>
-            <NavigationBar links={navLinks}/>
+            <NavigationBar links={navLinks} isLoggedIn={true}/>
         </StyledApp>
     </BrowserRouter>);
 }
