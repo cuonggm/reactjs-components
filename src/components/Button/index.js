@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {color} from "../../const";
+import {color, fontSize} from "../../const";
 
 const StyledButton = styled.button`
   height: 40px;
@@ -10,6 +10,7 @@ const StyledButton = styled.button`
   color: ${color.light};
   border: solid 0 black;
   border-radius: 24px;
+  font-size: ${fontSize.standard};
 
   &:hover {
     background-color: ${color.primaryHover};

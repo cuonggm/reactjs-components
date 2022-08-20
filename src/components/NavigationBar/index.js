@@ -1,15 +1,24 @@
 import styled from "styled-components";
-import {breakPoints, color, fontSize, lightColor, primaryColor} from "../../const";
+import {breakPoints, color, fontSize} from "../../const";
 import {Button, LightButton} from "../Button";
 import {Link as StandardLink} from "../Link";
 import logo from "../../icons/icons8-pig-100.png"
 import {useState} from "react";
+
+/*
+* Props item:
+* 1. onLogin
+* 2. onLogout
+* 3. links: [{to, label}]
+* */
 
 const StyledNavigationBar = styled.div`
   height: 64px;
   background-color: ${color.primary};
   margin: 0;
   padding: 0;
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: row;
   padding: 0 16px;
@@ -51,15 +60,18 @@ const StyledRightList = styled(StyledList)`
   @media (max-width: ${breakPoints.small}) {
     display: ${props => !props.isDrawerShow && "none"};
     position: ${props => props.isDrawerShow && "fixed"};
-    top: 0;
+    top: 64px;
     left: 0;
-    height: 100%;
+    bottom: 0;
+    //height: 100%;
     width: 70%;
+    max-width: 273px;
     margin: 0;
     border-radius: 0 24px 24px 0;
     flex-direction: column;
     background-color: ${color.dark};
-    padding: 64px 0;
+    padding: 16px 0 16px 0;
+    overflow: auto;
   }
 `;
 
@@ -132,11 +144,33 @@ export const NavigationBar = (props) => {
 
     // Show Drawer
     const onMoreClick = () => {
-        console.log("More Click")
         setDrawerShow(state => {
             return !state;
         });
     };
+
+    // Hide Drawer
+    const onHideDrawer = () => {
+        setDrawerShow(state => {
+            return false;
+        });
+    }
+
+    // onLogin
+    const onLogin = () => {
+        props.onLogin && props.onLogin("username", "password");
+        setDrawerShow(state => {
+            return false;
+        });
+    }
+
+    // onLogin
+    const onLogout = () => {
+        props.onLogout && props.onLogout();
+        setDrawerShow(state => {
+            return false;
+        });
+    }
 
     return <StyledNavigationBar {...props}>
         <StyledPanel>
@@ -146,11 +180,16 @@ export const NavigationBar = (props) => {
         </StyledPanel>
         <StyledPanel>
             <StyledRightList isDrawerShow={isDrawerShow}>
+                {props.links && props.links.map(link => {
+                    return <StyledItem>
+                        <Link to={link.to} onClick={onHideDrawer}>{link.label}</Link>
+                    </StyledItem>
+                })}
                 <StyledItem>
-                    <Link to="#">Login</Link>
+                    <Link to="/login" onClick={onLogin}>Login</Link>
                 </StyledItem>
                 <StyledItem>
-                    <Link to="#">Logout</Link>
+                    <Link to="#" onClick={onLogout}>Logout</Link>
                 </StyledItem>
             </StyledRightList>
             <AutoShowItem>
